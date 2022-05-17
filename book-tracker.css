@@ -1,18 +1,16 @@
 body {
     margin: 0;
-    background-image: url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80');
-    background-size: 100%;
+    background-color: rgb(83, 122, 118);
 }
 
 #book-header {
-    justify-content: left;
-    margin-left: 5%;
+    text-align: center;
     font-family: URW Chancery L, cursive;
-    font-size: 170%;
+    font-size: 130%;
     font-weight: bolder;
-    color: rgb(7, 61, 7);
-    text-shadow: 1px 0 rgb(7, 61, 7);
-    opacity: 80%;
+    background-color: white;
+    color: rgb(83, 122, 118);
+    text-shadow: 1px 0 rgb(83, 122, 118);
     letter-spacing:2px;
     font-weight:bold;
 }
