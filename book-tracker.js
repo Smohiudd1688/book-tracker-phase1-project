@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             createGoalProgress(object[0].goalNumber, object[0].currentNumber);
         }
     });
+    addABook();
     
 });
 
@@ -76,6 +77,25 @@ function createGoalProgress(goal, currentRead) {
       })
     })
     .then (response => response.json()); 
+}
+
+//deals with submission of add a book form
+function addABook() {
+    const form = document.querySelector('#book-adder form');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        updateGoal();
+    });
+    form.reset();
+}
+
+//makes sure progress of the goal is updated 
+function updateGoal() {
+    //increase the header that staes how many books have been read
+    let h3 = document.querySelector('h3');
+    h3Array = h3.textContent.split(' ');
+    h3Array[0] = parseInt(h3Array[0]) + 1;
+    h3.textContent = h3Array.join(' ');
 }
 
 
