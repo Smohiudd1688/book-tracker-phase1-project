@@ -14,14 +14,13 @@ body {
     letter-spacing:2px;
 }
 
-.forms{
+.forms {
     text-align: center;
     width: 42%;
-    height: 250px;
     float: left;
     display: block;
     padding: 1%;
-    margin-top: 3%;
+    margin-top: 1%;
     margin-right: 3%;
     margin-left: 3%;
     font-size: large;
@@ -29,6 +28,15 @@ body {
     background-color: white;
     border-radius: 20px;
     color: rgb(83, 122, 118);
+}
+
+#list-title {
+    text-align: center;
+    margin-top: 27%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: xx-large;
+    color: white;
+    background-color: rgb(83, 122, 118);
 }
 
 
