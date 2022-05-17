@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    background-image: url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTd8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80');
+    background-size: 100%;
+}
+
+#book-header {
+    justify-content: left;
+    margin-left: 5%;
+    font-family: URW Chancery L, cursive;
+    font-size: 170%;
+    font-weight: bolder;
+    color: rgb(7, 61, 7);
+    text-shadow: 1px 0 rgb(7, 61, 7);
+    opacity: 80%;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+
+
+
