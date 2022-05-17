@@ -17,6 +17,7 @@ body {
 .forms {
     text-align: center;
     width: 42%;
+    height: 270px;
     float: left;
     display: block;
     padding: 1%;
