@@ -1,7 +1,20 @@
 //this event listener will wait until the dom is loaded before continuing
 //add functions to be called in here
 document.addEventListener('DOMContentLoaded', (event) => {
-    addReadingGoal();
+    //grab information from json file
+    fetch('http://localhost:3000/bookTracker')
+    .then(response => response.json())
+    .then(object => {
+        //if no goal has been made then continue with adding an event listener for adding a goal
+        if (object[0].goalNumber === 'N/A') {
+            addReadingGoal();
+
+        //if goal has been made take saved info from file to create goal progress area
+        } else {
+            createGoalProgress(object[0].goalNumber, object[0].currentNumber);
+        }
+    });
+    
 });
 
 //deals with the submission of the reading goal form
@@ -19,28 +32,51 @@ function addReadingGoal () {
 
         //if input is a number than remove form and add progress bar to dom
         } else {
-            form.remove();
-            const goalArea = document.querySelector("#book-goal");
-
-            //add a header that tells you amount of books read
-            const h3 = document.createElement('h3');
-            h3.textContent = `0 / ${goal.value}`;
-            
-            //add a progress bar to see how far
-            const progress = document.createElement('progress');
-            progress.setAttribute('value', '22');
-            progress.setAttribute('max', `${goal.value}`)
-
-            //add a note of encouragment for user
-            const p = document.createElement('p');
-            p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.'
-
-            //append all of these to the dom
-            goalArea.appendChild(h3);
-            goalArea.appendChild(progress);
-            goalArea.appendChild(p);
+            createGoalProgress(goal.value, 0);
         }
         form.reset();
     });
 }
+
+//goal progress area is created and json file is updated
+function createGoalProgress(goal, currentRead) {
+    const form = document.querySelector('#book-goal form');
+    form.remove();
+    const goalArea = document.querySelector("#book-goal");
+
+    //add a header that tells you amount of books read
+    const h3 = document.createElement('h3');
+    h3.textContent = `0 / ${goal}`;
+            
+    //add a progress bar to see how far
+    const progress = document.createElement('progress');
+    progress.setAttribute('value', `${currentRead}`);
+    progress.setAttribute('max', `${goal}`)
+
+    //add a note of encouragment for user
+    const p = document.createElement('p');
+    p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.'
+
+    //append all of these to the dom
+    goalArea.appendChild(h3);
+    goalArea.appendChild(progress);
+    goalArea.appendChild(p);
+
+    //update goal information in json file
+    fetch('http://localhost:3000/bookTracker/1', {
+        method: 'PATCH',
+        headers:
+      {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        'goalNumber': goal,
+        "currentNumber": currentRead
+      })
+    })
+    .then (response => response.json()); 
+}
+
+
 
