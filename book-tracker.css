@@ -12,8 +12,26 @@ body {
     color: rgb(83, 122, 118);
     text-shadow: 1px 0 rgb(83, 122, 118);
     letter-spacing:2px;
-    font-weight:bold;
 }
+
+.forms{
+    text-align: center;
+    width: 42%;
+    height: 250px;
+    float: left;
+    display: block;
+    padding: 1%;
+    margin-top: 3%;
+    margin-right: 3%;
+    margin-left: 3%;
+    font-size: large;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: white;
+    border-radius: 20px;
+    color: rgb(83, 122, 118);
+}
+
+
 
 
 

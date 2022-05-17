@@ -7,16 +7,38 @@
         <script defer type="text/javascript" src="src/book-tracker.js"></script>
     </head>
     <body>
-        <div id="book-header">
+        <header id="book-header">
             <h1 id="title">The Ultimate Book Tracker</h1>
-        </div>
+        </header>
         <div id="book-goal" class="forms">
+            <h2>
+                <script type="text/javascript">let year = new Date();document.write(year.getFullYear());</script> Reading Goal
+            </h2>
             <form>
-
+                <label for="book-goal-entry">How Many Books Do You<br>Want To Read This Year? </label><br><br>
+                <input required type="text" id="book-goal-entry"><br><br>
+                <input type="submit" id="goal-submit" value="Submit">
             </form>
         </div>
         <div id="book-adder" class="forms">
-
+            <h2>Finished a Book? Add it Here</h2>
+            <form>
+                <label for="book-title">Book Title: </label>
+                <input type="text" id="book-title"><br><br>
+                <label for="book-isbn">Book ISBN: </label>
+                <input required type="text" id="book-isbn"><br><br>
+                <label for="book-rating">How would you rate this book?</label><br>
+                <select name="book-rating" id="book-rating">
+                    <option value="-">-</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select><br><br>
+                <input type="submit" id="add-book-submit" value="Submit">
+            </form>
         </div>
         <div id="book-display">
 
