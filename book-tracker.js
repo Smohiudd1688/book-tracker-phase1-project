@@ -21,9 +21,23 @@ function addReadingGoal () {
         } else {
             form.remove();
             const goalArea = document.querySelector("#book-goal");
+
+            //add a header that tells you amount of books read
+            const h3 = document.createElement('h3');
+            h3.textContent = `0 / ${goal.value}`;
+            
+            //add a progress bar to see how far
+            const progress = document.createElement('progress');
+            progress.setAttribute('value', '22');
+            progress.setAttribute('max', `${goal.value}`)
+
+            //add a note of encouragment for user
             const p = document.createElement('p');
-            p.textContent = goal.value;
-            console.log(goalArea);
+            p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.'
+
+            //append all of these to the dom
+            goalArea.appendChild(h3);
+            goalArea.appendChild(progress);
             goalArea.appendChild(p);
         }
         form.reset();
