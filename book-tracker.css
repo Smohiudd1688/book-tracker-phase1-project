@@ -32,7 +32,7 @@ body {
     margin-left: 1%;
 }
 
-img {
+#decor {
     height: 280px;
     border-radius: 50%;
 }
@@ -68,6 +68,29 @@ progress::-webkit-progress-value
     background: rgb(176, 167, 188);
 }
 
+.book 
+{
+    text-align: center;
+    border: grey solid 1px;
+    padding: 1rem;
+    width: 7rem;
+    height: 12rem;
+    display: inline-grid;
+    margin: 1rem 2rem;
+    background-color: white;
+    box-shadow: 8px 10px rgb(176, 167, 188);
+  }
 
+.book-cover 
+{
+    justify-self: center;
+    height: 4rem;
+    width: auto;
+}
+
+#book-display
+{
+    justify-content: center;
+}
 
 
