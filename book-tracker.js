@@ -47,7 +47,7 @@ function createGoalProgress(goal, currentRead) {
 
     //add a header that tells you amount of books read
     const h3 = document.createElement('h3');
-    h3.textContent = `0 / ${goal}`;
+    h3.textContent = `${currentRead} / ${goal}`;
             
     //add a progress bar to see how far
     const progress = document.createElement('progress');
@@ -67,7 +67,6 @@ function createGoalProgress(goal, currentRead) {
         method: 'PATCH',
         headers:
       {
-        "Content-Type": "application/json",
         Accept: "application/json"
       },
       body: JSON.stringify({
@@ -84,7 +83,19 @@ function addABook() {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         updateGoal();
+        findBooks();
         form.reset();
+    });
+}
+
+function findBooks() {
+    const isbn = document.querySelector('#book-isbn');
+    console.log(isbn.value);
+
+    fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${isbn.value}&jscmd=details&format=json`)
+    .then(response => response.json())
+    .then(object => {
+        console.log(object);
     });
 }
 
@@ -94,12 +105,25 @@ function updateGoal() {
     let h3 = document.querySelector('h3');
     h3Array = h3.textContent.split(' ');
     h3Array[0] = parseInt(h3Array[0]) + 1;
-    const currentRead = parseInt(h3Array[0]) + 1;
+    const currentRead = parseInt(h3Array[0]);
     const goal = h3Array[2];
     h3.textContent = h3Array.join(' ');
 
     const progress = document.querySelector('progress');
     progress.value = currentRead;
+
+    fetch('http://localhost:3000/bookTracker/1', {
+        method: 'PATCH',
+        headers:
+      {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        "currentNumber": currentRead
+      })
+    })
+    .then (response => response.json());
 }
 
 
