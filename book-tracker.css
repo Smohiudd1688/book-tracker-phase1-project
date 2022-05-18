@@ -40,25 +40,28 @@ body {
     background-color: rgb(83, 122, 118);
 }
 
-progress {
-    height: 40px;
-    background: black;
-    border-radius: 20px;
-  }
-  progress::-moz-progress-bar
-  {
-      background: rgb(142, 122, 165);
+progress 
+{
+    height: 50px;
+    width: 70%;
+    background: black;  
+}
+
+progress::-moz-progress-bar
+{
+    background: rgb(142, 122, 165);
+}
+
+progress::-webkit-progress-bar
+{
+    background: transparent;
       
-  }
-  progress::-webkit-progress-bar
-  {
-      background: transparent;
-  }
-  progress::-webkit-progress-value
-  {
-      background: rgb(142, 122, 165);
-      border-radius: 20px;
-  }
+}
+
+progress::-webkit-progress-value
+{
+    background: rgb(142, 122, 165);
+}
 
 
 

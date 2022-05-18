@@ -2,9 +2,9 @@
   "bookTracker": [
     {
       "id": 1,
-      "goalNumber": "20",
+      "goalNumber": "N/A",
       "currentNumber": 0,
-      "bookRead": []
+      "booksRead": []
     }
   ]
 }

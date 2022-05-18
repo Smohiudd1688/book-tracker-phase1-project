@@ -63,7 +63,6 @@ function createGoalProgress(goal, currentRead) {
     goalArea.appendChild(progress);
     goalArea.appendChild(p);
 
-    //update goal information in json file
     fetch('http://localhost:3000/bookTracker/1', {
         method: 'PATCH',
         headers:
@@ -76,7 +75,7 @@ function createGoalProgress(goal, currentRead) {
         "currentNumber": currentRead
       })
     })
-    .then (response => response.json()); 
+    .then (response => response.json());
 }
 
 //deals with submission of add a book form
@@ -85,8 +84,8 @@ function addABook() {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         updateGoal();
+        form.reset();
     });
-    form.reset();
 }
 
 //makes sure progress of the goal is updated 
@@ -95,8 +94,15 @@ function updateGoal() {
     let h3 = document.querySelector('h3');
     h3Array = h3.textContent.split(' ');
     h3Array[0] = parseInt(h3Array[0]) + 1;
+    const currentRead = parseInt(h3Array[0]) + 1;
+    const goal = h3Array[2];
     h3.textContent = h3Array.join(' ');
+
+    const progress = document.querySelector('progress');
+    progress.value = currentRead;
 }
+
+
 
 
 
