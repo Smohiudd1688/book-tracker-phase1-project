@@ -56,7 +56,7 @@ function createGoalProgress(goal, currentRead) {
 
     //add a note of encouragment for user
     const p = document.createElement('p');
-    p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.'
+    p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.';
 
     //append all of these to the dom
     goalArea.appendChild(h3);
@@ -66,13 +66,14 @@ function createGoalProgress(goal, currentRead) {
     fetch('http://localhost:3000/bookTracker/1', {
         method: 'PATCH',
         headers:
-      {
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        'goalNumber': goal,
-        "currentNumber": currentRead
-      })
+        {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            'goalNumber': goal,
+            "currentNumber": currentRead
+        })
     })
     .then (response => response.json());
 }
@@ -95,13 +96,15 @@ function findBooks() {
     fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${isbn.value}&jscmd=details&format=json`)
     .then(response => response.json())
     .then(object => {
-        console.log(object);
+        console.log(object[Object.keys(object)[0]]);
+        const author = object[Object.keys(object)[0]].details.authors[0].name;
+        console.log(author);
     });
 }
 
 //makes sure progress of the goal is updated 
 function updateGoal() {
-    //increase the header that staes how many books have been read
+    //increase the header that states how many books have been read
     let h3 = document.querySelector('h3');
     h3Array = h3.textContent.split(' ');
     h3Array[0] = parseInt(h3Array[0]) + 1;
@@ -115,13 +118,13 @@ function updateGoal() {
     fetch('http://localhost:3000/bookTracker/1', {
         method: 'PATCH',
         headers:
-      {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        "currentNumber": currentRead
-      })
+        {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            "currentNumber": currentRead
+        })
     })
     .then (response => response.json());
 }
