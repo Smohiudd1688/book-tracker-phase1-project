@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             createGoalProgress(object[0].goalNumber, object[0].currentNumber);
 
             //go through the json file and make sure any added books stay up after a refresh
-            for (const book of object) {
+            object.forEach(book => {
                 if (book.id !== 1) {
                     createBooks(book.title, book.cover, book.author, book.rating, book.id);
                 }
-            }
+            });
         }
     });
     addABook();
@@ -93,10 +93,15 @@ function addABook() {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const rating = document.querySelector("#book-rating").value;
+        const isbn = document.querySelector('#book-isbn');
 
-        //send 1 so the current read amount will decrease
-        updateGoal(1);
-        findBooks(rating);
+        if(typeof(parseInt(isbn.value)) <= 0 || isNaN(isbn.value) || isbn.value.length !== 10 || isbn.value.length !== 13) {
+            alert("Enter a valid 10 or 13 digit ISBN number");
+        } else {
+            //send 1 so the current read amount will decrease
+            updateGoal(1);
+            findBooks(rating);
+        }
         form.reset();
     });
 }
