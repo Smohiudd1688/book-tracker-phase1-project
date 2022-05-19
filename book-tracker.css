@@ -73,8 +73,8 @@ progress::-webkit-progress-value
     text-align: center;
     border: grey solid 1px;
     padding: 1rem;
-    width: 7rem;
-    height: 12rem;
+    width: 10rem;
+    height: 18rem;
     display: inline-grid;
     margin: 1rem 2rem;
     background-color: white;
@@ -84,13 +84,13 @@ progress::-webkit-progress-value
 .book-cover 
 {
     justify-self: center;
-    height: 4rem;
+    height: 6rem;
     width: auto;
 }
 
-#book-display
-{
-    justify-content: center;
+#rating {
+    color: rgb(186, 169, 72);
 }
+
 
 
