@@ -12,6 +12,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         //if goal has been made take saved info from file to create goal progress area
         } else {
             createGoalProgress(object[0].goalNumber, object[0].currentNumber);
+            for (const book of object) {
+                if (book.id !== 1) {
+                    createBooks(book.title, book.cover, book.author, book.rating);
+                }
+            }
         }
     });
     addABook();
@@ -136,7 +141,6 @@ function createBooks(title, cover, author, rating) {
             ratingE.textContent = `${ratingE.textContent} ★`;
         }
     }
-
     ratingE.setAttribute('id', 'rating');
 
     book.appendChild(titleE);
