@@ -74,7 +74,7 @@ progress::-webkit-progress-value
     border: grey solid 1px;
     padding: 1rem;
     width: 10rem;
-    height: 18rem;
+    height: 22rem;
     display: inline-grid;
     margin: 2rem 5.7%;
     background-color: white;
@@ -90,6 +90,14 @@ progress::-webkit-progress-value
 
 #rating {
     color: rgb(186, 169, 72);
+}
+
+#delete {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: left;
+    font-size: x-large;
+    margin-top: 0%;
+    cursor: grab;
 }
 
 
