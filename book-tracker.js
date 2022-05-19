@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         //if goal has been made take saved info from file to create goal progress area
         } else {
             createGoalProgress(object[0].goalNumber, object[0].currentNumber);
-
+    
             //go through the json file and make sure any added books stay up after a refresh
             object.forEach(book => {
                 if (book.id !== 1) {
@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             });
         }
-    });
+    })
+    .catch((error) => alert('Whoops Something Went Wrong'));
+
     addABook();
     
 });
@@ -65,7 +67,13 @@ function createGoalProgress(goal, currentRead) {
 
     //add a note of encouragment for user
     const p = document.createElement('p');
-    p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.';
+    if (currentRead < goal) {
+        p.textContent = 'Keep Reading You Are Doing Great!!! Add a book and watch your progress soar.';
+    } else {
+        p.textContent = 'WooHoo!! You Reached Your Goal!';
+    }
+    p.setAttribute('id', 'message');
+    
 
     //append all of these to the dom
     goalArea.appendChild(h3);
@@ -84,7 +92,8 @@ function createGoalProgress(goal, currentRead) {
             "currentNumber": currentRead
         })
     })
-    .then (response => response.json());
+    .then (response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
 }
 
 //deals with submission of add a book form
@@ -95,7 +104,7 @@ function addABook() {
         const rating = document.querySelector("#book-rating").value;
         const isbn = document.querySelector('#book-isbn');
 
-        if(typeof(parseInt(isbn.value)) <= 0 || isNaN(isbn.value) || isbn.value.length !== 10 || isbn.value.length !== 13) {
+        if(typeof(parseInt(isbn.value)) <= 0 || isNaN(isbn.value) || (isbn.value.length !== 10 && isbn.value.length !== 13)) {
             alert("Enter a valid 10 or 13 digit ISBN number");
         } else {
             //send 1 so the current read amount will decrease
@@ -112,12 +121,17 @@ function findBooks(rating) {
 
     fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${isbn.value}&jscmd=details&format=json`)
     .then(response => response.json())
-    .then(object => addBookToList(object, rating));
+    .then(object => addBookToList(object, rating))
+    .catch((error) => alert('Whoops Something Went Wrong'));
 }
 
 //if isbn matches find the data we need to diplay and save to send to necessdary functions
 function addBookToList(object, rating) {
     const bookObject = object[Object.keys(object)[0]];
+    if (bookObject === undefined) {
+
+    }
+
     const title = bookObject.details.title;
     const author = bookObject.details.authors[0].name;
     let cover = bookObject["thumbnail_url"];
@@ -190,7 +204,8 @@ function handleDelete(event){
             Accept: "application/json"
         }
     })
-    .then(response => response.json());
+    .then(response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
 
     //send -1 so the current read amount will decrease
     updateGoal(-1);
@@ -212,7 +227,8 @@ function postBook(title, cover, author, rating) {
             'rating': rating
         })
     })
-    .then (response => response.json());
+    .then (response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
 }
 
 //makes sure progress of the goal is updated 
@@ -223,6 +239,11 @@ function updateGoal(numToAdd) {
     h3Array[0] = parseInt(h3Array[0]) + numToAdd;
     const currentRead = parseInt(h3Array[0]);
     const goal = h3Array[2];
+
+    if(currentRead >= goal) {
+        goalReached();
+    }
+
     h3.textContent = h3Array.join(' ');
 
     //progress bar
@@ -240,8 +261,16 @@ function updateGoal(numToAdd) {
             "currentNumber": currentRead
         })
     })
-    .then (response => response.json());
+    .then (response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
 }
+
+function goalReached() {
+    const message = document.querySelector('#message');
+    message.textContent = 'WooHoo!! You Reached Your Goal!'
+}
+
+
 
 
 

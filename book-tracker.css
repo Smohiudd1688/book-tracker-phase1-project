@@ -100,5 +100,9 @@ progress::-webkit-progress-value
     cursor: grab;
 }
 
+#sort {
+    margin-left: 80%;
+}
+
 
 
