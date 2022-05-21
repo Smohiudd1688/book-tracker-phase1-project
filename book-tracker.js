@@ -1,36 +1,11 @@
 //this event listener will wait until the dom is loaded before continuing
 document.addEventListener('DOMContentLoaded', (event) => {
     //grab information from json file
-    initializeBooks();
+    fetchBooks();
+    addABook();
+    sortBooks();
     
 });
-
-//initializes page in order to present accurate information
-function initializeBooks () {
-    //grab information from json file
-    fetch('http://localhost:3000/bookTracker')
-    .then(response => response.json())
-    .then(object => {
-        //if no goal has been made then continue with adding an event listener for adding a goal
-        if (object[0].goalNumber === 'N/A') {
-            addReadingGoal();
-
-        //if goal has been made take saved info from file to create goal progress area
-        } else {
-            createGoalProgress(object[0].goalNumber, object[0].currentNumber);
-
-            //go through the json file and make sure any added books stay up after a refresh
-            object.forEach(book => {
-                if (book.id !== 1) {
-                    createBooks(book);
-                }
-            });
-        }
-    })
-    .catch((error) => alert('Whoops Something Went Wrong'));
-
-    addABook();
-}
 
 //deals with the submission of the reading goal form
 function addReadingGoal () {
@@ -41,7 +16,7 @@ function addReadingGoal () {
         const goal = form.querySelector('#book-goal-entry');
 
         //makes sure what is entered is a number and is postive, if not sent alert
-        if (typeof(parseInt(goal.value)) <= 0 || isNaN(goal.value))
+        if (parseInt(goal.value) <= 0 || isNaN(goal.value))
         {
             alert('Please enter a number greater than 0.');
 
@@ -83,20 +58,7 @@ function createGoalProgress(goal, currentRead) {
     goalArea.appendChild(progress);
     goalArea.appendChild(p);
 
-    fetch('http://localhost:3000/bookTracker/1', {
-        method: 'PATCH',
-        headers:
-        {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify({
-            'goalNumber': goal,
-            "currentNumber": currentRead
-        })
-    })
-    .then (response => response.json())
-    .catch((error) => alert('Whoops Something Went Wrong'));
+    patchGoal(goal, currentRead);
 }
 
 //deals with submission of add a book form
@@ -125,13 +87,6 @@ function addABook() {
         }
         form.reset();
     });
-}
-
-//when book is added it will seach through the open library api based on isbn inputed
-function findBooks(book) {
-    fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${book.isbn.value}&jscmd=details&format=json`)
-    .then(response => response.json())
-    .then(object => addBookToList(object, book));
 }
 
 //if isbn matches find the data we need to diplay and save to send to necessdary functions
@@ -209,45 +164,6 @@ function createBooks(book) {
     bookArea.appendChild(bookCard);
 }
 
-//if x is clicked then that book will be deleted from dom and goal will update
-function handleDelete(event){
-    const bookId = event.target.parentNode.id;
-    event.target.parentNode.remove();
-
-    fetch(`http://localhost:3000/bookTracker/${bookId}`, {
-        method: 'DELETE',
-        headers:
-        {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        }
-    })
-    .then(response => response.json())
-    .catch((error) => alert('Whoops Something Went Wrong'));
-
-    //send -1 so the current read amount will decrease
-    updateGoal(-1);
-}
-
-//posts necessary information to the database
-function postBook(book) {
-    fetch('http://localhost:3000/bookTracker', {
-        method: 'POST',
-        headers:
-        {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify({
-            'title': book.title,
-            'cover': book.cover,
-            'author': book.author,
-            'rating': book.rating
-        })
-    })
-    .then (response => response.json())
-    .catch((error) => alert('Whoops Something Went Wrong'));
-}
 
 //makes sure progress of the goal is updated 
 function updateGoal(numToAdd) {
@@ -271,6 +187,46 @@ function updateGoal(numToAdd) {
     const progress = document.querySelector('progress');
     progress.value = currentRead;
 
+    patchGoal(goal, currentRead);
+}
+
+function sortBooks() {
+    const dropdown = document.querySelector('#sort');
+    dropdown.addEventListener('change', event => {
+        if (event.target.value === "lth") {
+
+        }
+    })
+}
+
+
+//initializes page in order to present accurate information
+function fetchBooks() {
+    //grab information from json file
+    fetch('http://localhost:3000/bookTracker')
+    .then(response => response.json())
+    .then(object => {
+        //if no goal has been made then continue with adding an event listener for adding a goal
+        if (object[0].goalNumber === 'N/A') {
+            addReadingGoal();
+
+        //if goal has been made take saved info from file to create goal progress area
+        } else {
+            createGoalProgress(object[0].goalNumber, object[0].currentNumber);
+
+            //go through the json file and make sure any added books stay up after a refresh
+            object.forEach(book => {
+                if (book.id !== 1) {
+                    createBooks(book);
+                }
+            });
+        }
+    })
+    .catch((error) => alert('Whoops Something Went Wrong'));
+
+}
+
+function patchGoal(goal, currentRead) {
     fetch('http://localhost:3000/bookTracker/1', {
         method: 'PATCH',
         headers:
@@ -279,11 +235,59 @@ function updateGoal(numToAdd) {
             Accept: "application/json"
         },
         body: JSON.stringify({
+            'goalNumber': goal,
             "currentNumber": currentRead
         })
     })
     .then (response => response.json())
     .catch((error) => alert('Whoops Something Went Wrong'));
+}
+
+//when book is added it will seach through the open library api based on isbn inputed
+function findBooks(book) {
+    fetch(`http://openlibrary.org/api/books?bibkeys=ISBN:${book.isbn.value}&jscmd=details&format=json`)
+    .then(response => response.json())
+    .then(object => addBookToList(object, book));
+}
+
+//posts necessary information to the database
+function postBook(book) {
+    fetch('http://localhost:3000/bookTracker', {
+        method: 'POST',
+        headers:
+        {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            'title': book.title,
+            'cover': book.cover,
+            'author': book.author,
+            'rating': book.rating
+        })
+    })
+    .then (response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
+}
+
+//if x is clicked then that book will be deleted from dom and goal will update
+function handleDelete(event){
+    const bookId = event.target.parentNode.id;
+    event.target.parentNode.remove();
+
+    fetch(`http://localhost:3000/bookTracker/${bookId}`, {
+        method: 'DELETE',
+        headers:
+        {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        }
+    })
+    .then(response => response.json())
+    .catch((error) => alert('Whoops Something Went Wrong'));
+
+    //send -1 so the current read amount will decrease
+    updateGoal(-1);
 }
 
 
