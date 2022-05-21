@@ -201,25 +201,32 @@ function fetchBooks(value) {
     fetch('http://localhost:3000/bookTracker')
     .then(response => response.json())
     .then(object => {
-        if (value = "da") {
-            bookObjects.forEach(book => {
-                createBooks(book);
-            })
+        const bookDisplayed = document.querySelectorAll('.book');
+        bookDisplayed.forEach(book => book.remove());
+        if (value === "da") {
+            object.forEach(book => {
+                if (book.id !== 1) {
+                    createBooks(book);
+                }
+            });
         } else {
-            sortByRate(object)
+            sortByRate(object, value);
         }
     })
     .catch((error) => alert('Whoops Something Went Very Wrong'));
 }
 
-function sortByRate(objects) {
+function sortByRate(object, value) {
+    let bookObjects = object;
     const rate1 = [];
     const rate2 = [];
     const rate3 = [];
     const rate4 = [];
     const rate5 = [];
     const noRate = [];
+
     object.forEach(book => {
+        console.log(book);
         if (book.id !== 1) {
             switch(book.rating) {
                 case "1":
@@ -228,32 +235,40 @@ function sortByRate(objects) {
                 case "2":
                     rate2.push(book);
                     break;
-                    case "3":
-                        break;
-                    case "4":
-                        rate4.push(book);
-                        break;
-                    case "5":
-                        rate5.push(book);
-                        break;
-                    case "-":
-                        noRate.push(book);
-                }
+                case "3":
+                    rate3.push(book);
+                    break;
+                case "4":
+                    rate4.push(book);
+                    break;
+                case "5":
+                    rate5.push(book);
+                    break;
+                case "-":
+                    noRate.push(book);
             }
-        })
-        
-        if (value === 'lth') {
-            bookObjects = [...rate1, ...rate2, ...rate3, ...rate4, ...rate5, ...noRate];
-
-        } else if (value === 'htl') {
-            bookObjects = [...rate5, ...rate4, ...rate3, ...rate2, ...rate1, ...noRate];
         }
+    })
+    
+    if (value === 'lth') {
+        bookObjects = [...rate1, ...rate2, ...rate3, ...rate4, ...rate5, ...noRate];
 
-        const bookDisplayed = document.querySelectorAll('.book');
-        bookDisplayed.forEach(book => book.remove());
-        bookObjects.forEach(book => {
-            createBooks(book);
-        })
+    } else if (value === 'htl') {
+        bookObjects = [...rate5, ...rate4, ...rate3, ...rate2, ...rate1, ...noRate];
+    }
+
+    
+    bookObjects.forEach(book => {
+        createBooks(book);
+    });
+}
+
+function deleteAndCreateForSort (bookObjects) {
+    const bookDisplayed = document.querySelectorAll('.book');
+    bookDisplayed.forEach(book => book.remove());
+    bookObjects.forEach(book => {
+        createBooks(book);
+    });
 }
 
 
