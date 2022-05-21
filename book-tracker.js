@@ -1,7 +1,7 @@
 //this event listener will wait until the dom is loaded before continuing
 document.addEventListener('DOMContentLoaded', (event) => {
     //grab information from json file
-    fetchBooks();
+    initalizeBooks();
     addABook();
     sortBooks();
     
@@ -153,7 +153,7 @@ function createBooks(book) {
             ratingE.textContent = `${ratingE.textContent} ★`;
         }
     }
-    ratingE.setAttribute('id', 'rating');
+    ratingE.setAttribute('class', 'rating');
 
     //add all of these new elements to the dom
     bookCard.appendChild(deleteE);
@@ -193,15 +193,72 @@ function updateGoal(numToAdd) {
 function sortBooks() {
     const dropdown = document.querySelector('#sort');
     dropdown.addEventListener('change', event => {
-        if (event.target.value === "lth") {
+        fetchBooks(event.target.value);
+    })
+}
 
+function fetchBooks(value) {
+    fetch('http://localhost:3000/bookTracker')
+    .then(response => response.json())
+    .then(object => {
+        if (value = "da") {
+            bookObjects.forEach(book => {
+                createBooks(book);
+            })
+        } else {
+            sortByRate(object)
         }
     })
+    .catch((error) => alert('Whoops Something Went Very Wrong'));
+}
+
+function sortByRate(objects) {
+    const rate1 = [];
+    const rate2 = [];
+    const rate3 = [];
+    const rate4 = [];
+    const rate5 = [];
+    const noRate = [];
+    object.forEach(book => {
+        if (book.id !== 1) {
+            switch(book.rating) {
+                case "1":
+                    rate1.push(book);
+                    break;
+                case "2":
+                    rate2.push(book);
+                    break;
+                    case "3":
+                        break;
+                    case "4":
+                        rate4.push(book);
+                        break;
+                    case "5":
+                        rate5.push(book);
+                        break;
+                    case "-":
+                        noRate.push(book);
+                }
+            }
+        })
+        
+        if (value === 'lth') {
+            bookObjects = [...rate1, ...rate2, ...rate3, ...rate4, ...rate5, ...noRate];
+
+        } else if (value === 'htl') {
+            bookObjects = [...rate5, ...rate4, ...rate3, ...rate2, ...rate1, ...noRate];
+        }
+
+        const bookDisplayed = document.querySelectorAll('.book');
+        bookDisplayed.forEach(book => book.remove());
+        bookObjects.forEach(book => {
+            createBooks(book);
+        })
 }
 
 
 //initializes page in order to present accurate information
-function fetchBooks() {
+function initalizeBooks() {
     //grab information from json file
     fetch('http://localhost:3000/bookTracker')
     .then(response => response.json())
