@@ -176,7 +176,6 @@ function addBookToList(object, book) {
         book.author = "Not Found";
         book.cover = cover;
         postBook(book);
-        createBooks(book);
     } else {
         book.title = bookObject.details.title;
         if (bookObject.details.authors === undefined) {
@@ -192,7 +191,6 @@ function addBookToList(object, book) {
         }
 
         postBook(book);
-        createBooks(book);
     }
 
     
@@ -215,6 +213,7 @@ function postBook(book) {
         })
     })
     .then (response => response.json())
+    .then(object => createBooks(object));
 }
 
 //creates the book card that will be displayed
