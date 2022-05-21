@@ -77,7 +77,7 @@ function addABook() {
                 isbn: document.querySelector('#book-isbn')
             }
     
-            if(typeof(parseInt(book.isbn.value)) <= 0 || (book.isbn.value.length !== 10 && book.isbn.value.length !== 13)) {
+            if(parseInt(book.isbn.value) <= 0 || (book.isbn.value.length !== 10 && book.isbn.value.length !== 13)) {
                 alert("Enter a valid 10 or 13 digit ISBN number");
             } else {
                 //send 1 so the current read amount will decrease
@@ -102,7 +102,11 @@ function addBookToList(object, book) {
         createBooks(book);
     } else {
         book.title = bookObject.details.title;
-        book.author = bookObject.details.authors[0].name;
+        if (bookObject.details.authors === undefined) {
+            book.author = "Not Found";
+        } else {
+            book.author = bookObject.details.authors[0].name;
+        }
         book.cover = bookObject["thumbnail_url"];
 
         //some covers arent available so if not display an image to replace it
@@ -193,27 +197,8 @@ function updateGoal(numToAdd) {
 function sortBooks() {
     const dropdown = document.querySelector('#sort');
     dropdown.addEventListener('change', event => {
-        fetchBooks(event.target.value);
+        fetchBooksForSort(event.target.value);
     })
-}
-
-function fetchBooks(value) {
-    fetch('http://localhost:3000/bookTracker')
-    .then(response => response.json())
-    .then(object => {
-        const bookDisplayed = document.querySelectorAll('.book');
-        bookDisplayed.forEach(book => book.remove());
-        if (value === "da") {
-            object.forEach(book => {
-                if (book.id !== 1) {
-                    createBooks(book);
-                }
-            });
-        } else {
-            sortByRate(object, value);
-        }
-    })
-    .catch((error) => alert('Whoops Something Went Very Wrong'));
 }
 
 function sortByRate(object, value) {
@@ -226,7 +211,6 @@ function sortByRate(object, value) {
     const noRate = [];
 
     object.forEach(book => {
-        console.log(book);
         if (book.id !== 1) {
             switch(book.rating) {
                 case "1":
@@ -262,15 +246,6 @@ function sortByRate(object, value) {
         createBooks(book);
     });
 }
-
-function deleteAndCreateForSort (bookObjects) {
-    const bookDisplayed = document.querySelectorAll('.book');
-    bookDisplayed.forEach(book => book.remove());
-    bookObjects.forEach(book => {
-        createBooks(book);
-    });
-}
-
 
 //initializes page in order to present accurate information
 function initalizeBooks() {
@@ -360,6 +335,25 @@ function handleDelete(event){
 
     //send -1 so the current read amount will decrease
     updateGoal(-1);
+}
+
+function fetchBooksForSort(value) {
+    fetch('http://localhost:3000/bookTracker')
+    .then(response => response.json())
+    .then(object => {
+        const bookDisplayed = document.querySelectorAll('.book');
+        bookDisplayed.forEach(book => book.remove());
+        if (value === "da") {
+            object.forEach(book => {
+                if (book.id !== 1) {
+                    createBooks(book);
+                }
+            });
+        } else {
+            sortByRate(object, value);
+        }
+    })
+    .catch((error) => alert('Whoops Something Went Very Wrong'));
 }
 
 

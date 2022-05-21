@@ -2,8 +2,29 @@
   "bookTracker": [
     {
       "id": 1,
-      "goalNumber": "20",
-      "currentNumber": 0
+      "goalNumber": "5",
+      "currentNumber": 3
+    },
+    {
+      "title": "The Dragon Reborn (Wheel of Time)",
+      "cover": "https://covers.openlibrary.org/b/id/908775-S.jpg",
+      "author": "Robert Jordan",
+      "rating": "2",
+      "id": 3
+    },
+    {
+      "title": "The City of Brass",
+      "cover": "https://covers.openlibrary.org/b/id/10618830-S.jpg",
+      "author": "S. A. Chakraborty",
+      "rating": "-",
+      "id": 5
+    },
+    {
+      "title": "Kings of the Wyld: The Band, Book One",
+      "cover": "https://covers.openlibrary.org/b/id/8753965-S.jpg",
+      "author": "Not Found",
+      "rating": "4",
+      "id": 6
     }
   ]
 }
