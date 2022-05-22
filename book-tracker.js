@@ -192,7 +192,6 @@ function addBookToList(object, book) {
 
         postBook(book);
     }
-
     
 }
 

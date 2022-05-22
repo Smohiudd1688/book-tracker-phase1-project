@@ -21,6 +21,7 @@ body {
     background-color: white;
     color: rgb(83, 122, 118);
     padding: 1%;
+    border-radius: 10px;
 }
 
 .middle {
